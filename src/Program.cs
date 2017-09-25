@@ -12,42 +12,25 @@ namespace Kattis.UltimateSolution
     {
         static void Main(string[] args)
         {
-            //string fileName = "aaah.2.in";
             string fileName = String.Empty;
 
-            var problemProcessor = new AahProcesor();
+            var problemProcessor = new EmptyProcessor();
 
             var solver = new KattisSolver(problemProcessor, fileName);
-
-            solver.Solve();
+            solver.Solve();            
         }
     }
 
-    class AahProcesor : IProblemProcessor
+    class EmptyProcessor : IProblemProcessor
     {
-        private string firstLine;
-        private string secondLine;
-
         public void PostData()
         {
-            int canDo = firstLine.Length;
-            int need = secondLine.Length;
-
-            if (canDo >= need)
-                Console.WriteLine("go");
-            else
-                Console.WriteLine("no");
         }
 
         public void ProcessDataItem(Scanner scanner)
         {
-            firstLine = scanner.Next();
-            secondLine = scanner.Next();
         }
     }
-
-
-
 }
 
 #region Core
