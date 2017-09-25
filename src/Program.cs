@@ -12,6 +12,7 @@ namespace Kattis.UltimateSolution
     {
         static void Main(string[] args)
         {
+            //string fileName = "autori.1.in";
             string fileName = String.Empty;
 
             var problemProcessor = new EmptyProcessor();
@@ -29,6 +30,17 @@ namespace Kattis.UltimateSolution
 
         public void ProcessDataItem(Scanner scanner)
         {
+            string value = scanner.Next();
+
+            //caps > 65 < 97
+
+            IEnumerable<char> result = value.Where(p => ((int)p) >= 65 && ((int)p) < 97);
+            for (int i = 0; i < result.Count(); i++)
+            {
+                Console.Write(result.ElementAt(i));               
+            }
+                
+
         }
     }
 }
