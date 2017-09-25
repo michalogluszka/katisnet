@@ -16,6 +16,7 @@ namespace Kattis.UltimateSolution
             string fileName = String.Empty;
 
             //for local
+            //string fileName = "";
 
             var problemProcessor = new EmptyProcessor();
 
