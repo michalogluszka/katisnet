@@ -12,7 +12,10 @@ namespace Kattis.UltimateSolution
     {
         static void Main(string[] args)
         {
+            //for submission
             string fileName = String.Empty;
+
+            //for local
 
             var problemProcessor = new EmptyProcessor();
 
