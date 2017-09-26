@@ -13,10 +13,10 @@ namespace Kattis.UltimateSolution
         static void Main(string[] args)
         {
             //for submission
-            //string fileName = String.Empty;
+            string fileName = String.Empty;
 
             //for local
-            string fileName = "I.in";
+            //string fileName = "I.in";
 
             var problemProcessor = new EmptyProcessor();
 
@@ -33,7 +33,7 @@ namespace Kattis.UltimateSolution
         {
         }
 
-        
+
 
         public void ProcessDataItem(Scanner scanner)
         {
@@ -44,13 +44,19 @@ namespace Kattis.UltimateSolution
 
             for (int i = 0; i < numberOfTestCases; i++)
             {
-                int count =  scanner.NextInt();
+                int count = scanner.NextInt();
+
+                if (count == 0)
+                {
+                    Console.WriteLine("0");
+                    continue;
+                }
 
                 Dictionary<string, int> map = new Dictionary<string, int>();
-
-                for (int d = 0; d<count; d++)
+                
+                for (int d = 0; d < count; d++)
                 {
-                    string name = scanner.Next();
+                    scanner.Next();
                     string category = scanner.Next();
 
                     if (!map.ContainsKey(category))
@@ -63,28 +69,16 @@ namespace Kattis.UltimateSolution
                     }
                 }
 
-                int result = 0;
+                long result = map.ElementAt(0).Value;
 
-                for(int k=0; k<map.Count(); k++)
+                for (int k = 1; k < map.Count(); k++)
                 {
-                    int current = result += map.ElementAt(k).Value;
+                    int current = map.ElementAt(k).Value;
+                    result += result * current;
                     result += current;
-
-                    int sum = current;
-
-                    for (int j = k + 1; j < map.Count(); j++)
-                    {
-                        int next = map.ElementAt(j).Value;
-
-                        sum += sum * current;
-                        result += sum;
-                    }
-
                 }
 
                 Console.WriteLine(result);
-
-
             }
         }
     }
