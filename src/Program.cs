@@ -16,7 +16,7 @@ namespace Kattis.UltimateSolution
             string fileName = String.Empty;
 
             //for local
-            //string fileName = "";
+            //string fileName = "carrots.01.in";
 
             var problemProcessor = new EmptyProcessor();
 
@@ -31,8 +31,24 @@ namespace Kattis.UltimateSolution
         {
         }
 
+        int n = 0;
+        int p = 0;
+
         public void ProcessDataItem(Scanner scanner)
         {
+            if(n == 0)
+            { 
+                n = scanner.NextInt();
+                p = scanner.NextInt();
+
+                Console.WriteLine(p);
+            }
+            else
+            { 
+                scanner.Next();
+            }
+
+         
         }
     }
 }
