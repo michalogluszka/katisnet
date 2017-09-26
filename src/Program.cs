@@ -16,7 +16,7 @@ namespace Kattis.UltimateSolution
             string fileName = String.Empty;
 
             //for local
-            //string fileName = "";
+            //string fileName = "sample.in";
 
             var problemProcessor = new EmptyProcessor();
 
@@ -27,12 +27,41 @@ namespace Kattis.UltimateSolution
 
     class EmptyProcessor : IProblemProcessor
     {
+        private int _numberOfTestCases = -1;
+
+        private List<int[]> turtles = new List<int[]>();
+
+
+
+
         public void PostData()
         {
+                                
         }
 
         public void ProcessDataItem(Scanner scanner)
         {
+            _numberOfTestCases = scanner.NextInt();
+
+            for (int i = 0; i < _numberOfTestCases; i++)
+            {
+                int previous = scanner.NextInt();
+                int current = scanner.NextInt();
+                int result = 0;
+
+                while(current != 0)
+                {
+
+                    if(current > previous * 2)
+                    {
+                        result += current - previous * 2;
+                    }
+
+                    previous = current;
+                    current = scanner.NextInt();
+                }
+                Console.WriteLine(result);
+            }
         }
     }
 }
