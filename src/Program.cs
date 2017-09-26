@@ -13,26 +13,79 @@ namespace Kattis.UltimateSolution
         static void Main(string[] args)
         {
             //for submission
-            string fileName = String.Empty;
+            //string fileName = String.Empty;
 
             //for local
-            //string fileName = "";
+            string fileName = "I.in";
 
             var problemProcessor = new EmptyProcessor();
 
             var solver = new KattisSolver(problemProcessor, fileName);
-            solver.Solve();            
+            solver.Solve();
         }
     }
 
     class EmptyProcessor : IProblemProcessor
     {
+        int numberOfTestCases = -1;
+
         public void PostData()
         {
         }
 
+        
+
         public void ProcessDataItem(Scanner scanner)
         {
+            if (numberOfTestCases == -1)
+            {
+                numberOfTestCases = scanner.NextInt();
+            }
+
+            for (int i = 0; i < numberOfTestCases; i++)
+            {
+                int count =  scanner.NextInt();
+
+                Dictionary<string, int> map = new Dictionary<string, int>();
+
+                for (int d = 0; d<count; d++)
+                {
+                    string name = scanner.Next();
+                    string category = scanner.Next();
+
+                    if (!map.ContainsKey(category))
+                    {
+                        map.Add(category, 1);
+                    }
+                    else
+                    {
+                        map[category]++;
+                    }
+                }
+
+                int result = 0;
+
+                for(int k=0; k<map.Count(); k++)
+                {
+                    int current = result += map.ElementAt(k).Value;
+                    result += current;
+
+                    int sum = current;
+
+                    for (int j = k + 1; j < map.Count(); j++)
+                    {
+                        int next = map.ElementAt(j).Value;
+
+                        sum += sum * current;
+                        result += sum;
+                    }
+
+                }
+
+                Console.WriteLine(result);
+
+
+            }
         }
     }
 }
