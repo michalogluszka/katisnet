@@ -37,8 +37,7 @@ namespace Kattis.UltimateSolution
             var sorted = line.GroupBy(p => p);
 
             Console.WriteLine("...");
-            Console.WriteLine(MathExtension.Factorial(100));
-
+            
             decimal n = MathExtension.Factorial(line.Count());
 
             decimal k = 1;
@@ -47,6 +46,8 @@ namespace Kattis.UltimateSolution
             {
                 k *= MathExtension.Factorial(sorted.ElementAt(i).Count());
             }
+
+            Console.WriteLine("k=" +k);
 
             Console.WriteLine(n / k);
 
