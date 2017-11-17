@@ -13,10 +13,10 @@ namespace Kattis.UltimateSolution
         static void Main(string[] args)
         {
             //for submission
-            string fileName = String.Empty;
+            //string fileName = String.Empty;
 
             //for local
-            //string fileName = "";
+            string fileName = "2.in";
 
             var problemProcessor = new EmptyProcessor();
 
@@ -33,6 +33,26 @@ namespace Kattis.UltimateSolution
 
         public void ProcessDataItem(Scanner scanner)
         {
+            int first = scanner.NextInt();
+            int second = scanner.NextInt();
+            int third = scanner.NextInt();
+
+            string text = scanner.Next();
+
+            List<int> list = new List<int>() { first, second, third };
+            list.Sort();
+
+            int a = text.IndexOf("A");
+            int b = text.IndexOf("B");
+            int c = text.IndexOf("C");
+
+            List<string> result = new List<string>() { "", "", "" };
+
+            result[a] = list[0].ToString();
+            result[b] = list[1].ToString();
+            result[c] = list[2].ToString();
+
+            Console.WriteLine(result[0] + " " + result[1] + " " + result[2]);
         }
     }
 }
