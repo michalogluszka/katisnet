@@ -13,10 +13,10 @@ namespace Kattis.UltimateSolution
         static void Main(string[] args)
         {
             //for submission
-            string fileName = String.Empty;
+            //string fileName = String.Empty;
 
             //for local
-            //string fileName = "";
+            string fileName = "faktor.dummy.1.in";
 
             var problemProcessor = new EmptyProcessor();
 
@@ -33,6 +33,16 @@ namespace Kattis.UltimateSolution
 
         public void ProcessDataItem(Scanner scanner)
         {
+            double A = scanner.NextInt();
+            double I = scanner.NextInt();
+            double R = 0;
+
+            R = I * A;
+
+            Console.WriteLine(R);
+
+
+            
         }
     }
 }
