@@ -13,10 +13,10 @@ namespace Kattis.UltimateSolution
         static void Main(string[] args)
         {
             //for submission
-            string fileName = String.Empty;
+            //string fileName = String.Empty;
 
             //for local
-            //string fileName = "";
+            string fileName = "sample.in";
 
             var problemProcessor = new EmptyProcessor();
 
@@ -33,6 +33,24 @@ namespace Kattis.UltimateSolution
 
         public void ProcessDataItem(Scanner scanner)
         {
+            var line = scanner.Next().ToCharArray();
+            var sorted = line.GroupBy(p => p);
+
+            Console.WriteLine("...");
+            Console.WriteLine(MathExtension.Factorial(100));
+
+            decimal n = MathExtension.Factorial(line.Count());
+
+            decimal k = 1;
+
+            for (int i = 0; i < sorted.Count(); i++)
+            {
+                k *= MathExtension.Factorial(sorted.ElementAt(i).Count());
+            }
+
+            Console.WriteLine(n / k);
+
+
         }
     }
 }
@@ -197,6 +215,19 @@ namespace Kattis.Core
         public BufferedStdoutWriter() : base(new BufferedStream(Console.OpenStandardOutput()))
         {
         }
+    }
+}
+
+static class MathExtension
+{
+    public static decimal Factorial(int x)
+    {
+        decimal result = 1;
+        for(var i = 1; i<=x;i++)
+        {
+            result *= i;
+        }
+        return result;
     }
 }
 
