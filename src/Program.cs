@@ -45,7 +45,7 @@ namespace Kattis.UltimateSolution
             int s = (l2.x - p2.x) * (l1.y - l2.y) - (l2.y - p2.y) * (l1.x - l2.x);
 
             if (t == 0)
-                return null;
+                return null;                
 
             int x = s * p1.x + (1 - s) * p2.x;
             int y = s * p1.y + (1 - s) * p2.y;
@@ -58,6 +58,21 @@ namespace Kattis.UltimateSolution
         }
     }
 
+    class CrossLine
+    {
+        public Line l1;
+        public Line l2;
+    }
+
+    class Crossing
+    {
+        public int ID;
+
+        public Line l1;
+        public Line l2;
+
+    }
+
 
     class EmptyProcessor : IProblemProcessor
     {
@@ -65,7 +80,13 @@ namespace Kattis.UltimateSolution
 
         List<Line> fences = new List<Line>();
 
-        List<Point> crossPoint = new List<Point>();
+        List<CrossLine> crossings = new List<CrossLine>();
+
+        //Dictionary<Line, Line> graph = new Dictionary<Line, int>();
+
+        int result = 0;
+
+        Dictionary<Line, int> visited = new Dictionary<Line, int>();
 
 
         public void PostData()
@@ -82,17 +103,13 @@ namespace Kattis.UltimateSolution
                     {
                         Point cross = Helper.CrossPoint(fences[i].p1, fences[i].p2, fences[j].p1, fences[j].p2);
 
-                        if (cross != null)
-                        {
-                            crossPoint.Add(cross);
-                        }
-
+                        crossings.Add(new CrossLine() { l1 = fences[i], l2 = fences[j] });
                     }
                 }
 
-            }
+                
 
-            Console.WriteLine(crossPoint.Count());
+            }           
 
         }
 
