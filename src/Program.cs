@@ -16,7 +16,7 @@ namespace Kattis.UltimateSolution
             //string fileName = String.Empty;
 
             //for local
-            string fileName = "sample-testcase3.in";
+            string fileName = "sample-testcase2.in";
 
             var problemProcessor = new EmptyProcessor();
 
@@ -74,11 +74,6 @@ namespace Kattis.UltimateSolution
         public List<Crossing> connected = new List<Crossing>();
     }
 
-    class Edge
-    {
-        public Crossing current;
-        public List<Edge> connected = new List<Edge>();
-    }
 
 
     class EmptyProcessor : IProblemProcessor
@@ -117,19 +112,47 @@ namespace Kattis.UltimateSolution
                             var current = new Crossing() { l1 = fences[i], l2 = fences[j], id=crossId};
                             crossId++;
 
-                            AddConnections(current);
+                            VisitOptimal(current);
                         }
                     }
-                }
-
-                foreach (var c in graph)
-                {
-                    Visit(c);
                 }
             }
 
 
             Console.WriteLine(cows);
+        }
+
+        public void VisitOptimal(Crossing current)
+        {
+            if (!currentRoute.Contains(current))
+            {
+                currentRoute.Add(current);
+            }
+            else
+            {
+                currentRoute = new List<Crossing>();
+                cows++;
+            }
+
+            //all which are connected
+            var connected = graph.Where(p => p.l1 == current.l1 || p.l2 == current.l2 || p.l2 == current.l1 || p.l1 == current.l2).ToList();
+
+            foreach (var c in current.connected)
+            {
+                Pair route = crossingsVisited.FirstOrDefault(p => (p.crossing1 == current && p.crossing2 == c) || p.crossing2 == current && p.crossing1 == c);
+
+                if (route == null)
+                {
+                    Pair pair = new Pair() { crossing1 = current, crossing2 = c };
+                    crossingsVisited.Add(pair);
+
+
+
+                    VisitOptimal(c);
+
+                }
+            }
+
         }
 
         List<Line> linesVisited = new List<Line>();
