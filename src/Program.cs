@@ -124,6 +124,8 @@ namespace Kattis.UltimateSolution
 
         public void VisitOptimal(Crossing current)
         {
+            graph.Add(current);
+
             if (!currentRoute.Contains(current))
             {
                 currentRoute.Add(current);
@@ -145,11 +147,7 @@ namespace Kattis.UltimateSolution
                 {
                     Pair pair = new Pair() { crossing1 = current, crossing2 = c };
                     crossingsVisited.Add(pair);
-
-
-
                     VisitOptimal(c);
-
                 }
             }
 
