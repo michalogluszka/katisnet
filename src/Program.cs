@@ -66,11 +66,18 @@ namespace Kattis.UltimateSolution
 
     class Crossing
     {
-        public int ID;
-
         public Line l1;
         public Line l2;
 
+        public int id = 0;
+
+        public List<Crossing> connected = new List<Crossing>();
+    }
+
+    class Edge
+    {
+        public Crossing current;
+        public List<Edge> connected = new List<Edge>();
     }
 
 
@@ -80,37 +87,115 @@ namespace Kattis.UltimateSolution
 
         List<Line> fences = new List<Line>();
 
-        List<CrossLine> crossings = new List<CrossLine>();
+        List<Crossing> graph = new List<Crossing>();
 
         //Dictionary<Line, Line> graph = new Dictionary<Line, int>();
 
         int result = 0;
 
-        Dictionary<Line, int> visited = new Dictionary<Line, int>();
 
+        public int cows = 0;
 
         public void PostData()
         {
             if (fences.Count == 1)
             {
                 Console.WriteLine("0");
+                return;
             }
             else
             {
+                int crossId = 0;
                 for (int i = 0; i < fences.Count; i++)
                 {
                     for (int j = i + 1; j < fences.Count; j++)
                     {
                         Point cross = Helper.CrossPoint(fences[i].p1, fences[i].p2, fences[j].p1, fences[j].p2);
 
-                        crossings.Add(new CrossLine() { l1 = fences[i], l2 = fences[j] });
+                        if (cross != null)
+                        {
+                            var current = new Crossing() { l1 = fences[i], l2 = fences[j], id=crossId};
+                            crossId++;
+
+                            AddConnections(current);
+                        }
                     }
                 }
 
-                
+                foreach (var c in graph)
+                {
+                    Visit(c);
+                }
+            }
 
-            }           
 
+            Console.WriteLine(cows);
+        }
+
+        List<Line> linesVisited = new List<Line>();
+        List<Pair> crossingsVisited = new List<Pair>();
+
+        List<Crossing> currentRoute = new List<Crossing>();
+
+        public int Visit(Crossing current)
+        {
+            if(!currentRoute.Contains(current))
+            { 
+                currentRoute.Add(current);
+            }
+            else
+            {
+                currentRoute = new List<Crossing>();
+                cows++;
+            }
+
+            foreach (var c in current.connected)
+            {
+                Pair route = crossingsVisited.FirstOrDefault(p => (p.crossing1 == current && p.crossing2 == c) || p.crossing2 == current && p.crossing1 == c);
+
+                if (route==null)
+                {
+                    Pair pair = new Pair() { crossing1 = current, crossing2 = c };
+                    crossingsVisited.Add(pair);
+
+
+
+                    Visit(c);
+
+                    
+                }
+            }
+            return 0;
+        }
+
+        class Pair
+        {
+            public Crossing crossing1;
+            public Crossing crossing2;
+        }
+        
+
+        public void AddConnections(Crossing current)
+        {
+            var connected = graph.Where(p => p.l1 == current.l1 || p.l2 == current.l2 || p.l2 == current.l1 || p.l1 == current.l2).ToList();
+            current.connected = connected;
+            
+            foreach(var c in connected)
+            {
+                c.connected.Add(current);
+            }
+
+            graph.Add(current);
+
+            //var existing = graph.FirstOrDefault(p => p == current);
+            //if(existing==null)
+            //{
+            //    graph.Add(current);
+            //    foreach (var c in connected)
+            //    {
+            //        AddConnections(c);
+            //    }
+            //}
         }
 
         public void ProcessDataItem(Scanner scanner)
