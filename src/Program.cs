@@ -45,7 +45,7 @@ namespace Kattis.UltimateSolution
             int s = (l2.x - p2.x) * (l1.y - l2.y) - (l2.y - p2.y) * (l1.x - l2.x);
 
             if (t == 0)
-                return null;                
+                return null;
 
             int x = s * p1.x + (1 - s) * p2.x;
             int y = s * p1.y + (1 - s) * p2.y;
@@ -109,7 +109,7 @@ namespace Kattis.UltimateSolution
 
                         if (cross != null)
                         {
-                            var current = new Crossing() { l1 = fences[i], l2 = fences[j], id=crossId};
+                            var current = new Crossing() { l1 = fences[i], l2 = fences[j], id = crossId };
                             crossId++;
 
                             VisitOptimal(current);
@@ -137,7 +137,7 @@ namespace Kattis.UltimateSolution
             }
 
             //all which are connected
-            var connected = graph.Where(p => p.l1 == current.l1 || p.l2 == current.l2 || p.l2 == current.l1 || p.l1 == current.l2).ToList();
+            var connected = graph.Where((p => p.l1 == current.l1 || p.l2 == current.l2 || p.l2 == current.l1 || p.l1 == current.l2)).ToList();
 
             foreach (var c in current.connected)
             {
@@ -160,8 +160,8 @@ namespace Kattis.UltimateSolution
 
         public int Visit(Crossing current)
         {
-            if(!currentRoute.Contains(current))
-            { 
+            if (!currentRoute.Contains(current))
+            {
                 currentRoute.Add(current);
             }
             else
@@ -174,7 +174,7 @@ namespace Kattis.UltimateSolution
             {
                 Pair route = crossingsVisited.FirstOrDefault(p => (p.crossing1 == current && p.crossing2 == c) || p.crossing2 == current && p.crossing1 == c);
 
-                if (route==null)
+                if (route == null)
                 {
                     Pair pair = new Pair() { crossing1 = current, crossing2 = c };
                     crossingsVisited.Add(pair);
@@ -183,7 +183,7 @@ namespace Kattis.UltimateSolution
 
                     Visit(c);
 
-                    
+
                 }
             }
             return 0;
@@ -194,14 +194,14 @@ namespace Kattis.UltimateSolution
             public Crossing crossing1;
             public Crossing crossing2;
         }
-        
+
 
         public void AddConnections(Crossing current)
         {
             var connected = graph.Where(p => p.l1 == current.l1 || p.l2 == current.l2 || p.l2 == current.l1 || p.l1 == current.l2).ToList();
             current.connected = connected;
-            
-            foreach(var c in connected)
+
+            foreach (var c in connected)
             {
                 c.connected.Add(current);
             }
