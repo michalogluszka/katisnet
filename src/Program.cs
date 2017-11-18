@@ -13,26 +13,105 @@ namespace Kattis.UltimateSolution
         static void Main(string[] args)
         {
             //for submission
-            string fileName = String.Empty;
+            //string fileName = String.Empty;
 
             //for local
-            //string fileName = "";
+            string fileName = "sample-testcase3.in";
 
             var problemProcessor = new EmptyProcessor();
 
             var solver = new KattisSolver(problemProcessor, fileName);
-            solver.Solve();            
+            solver.Solve();
         }
     }
 
+    class Line
+    {
+        public Point p1;
+        public Point p2;
+    }
+
+    class Point
+    {
+        public int x;
+        public int y;
+    }
+
+    static class Helper
+    {
+        public static Point CrossPoint(Point p1, Point p2, Point l1, Point l2)
+        {
+            int t = (p1.x - p2.x) * (l1.y - l2.y) - (p1.y - p2.y) * (l1.x - l2.x);
+            int s = (l2.x - p2.x) * (l1.y - l2.y) - (l2.y - p2.y) * (l1.x - l2.x);
+
+            if (t == 0)
+                return null;
+
+            int x = s * p1.x + (1 - s) * p2.x;
+            int y = s * p1.y + (1 - s) * p2.y;
+
+            Point point = new Point();
+            point.x = x;
+            point.y = y;
+
+            return point;
+        }
+    }
+
+
     class EmptyProcessor : IProblemProcessor
     {
+        int N = 0;
+
+        List<Line> fences = new List<Line>();
+
+        List<Point> crossPoint = new List<Point>();
+
+
         public void PostData()
         {
+            if (fences.Count == 1)
+            {
+                Console.WriteLine("0");
+            }
+            else
+            {
+                for (int i = 0; i < fences.Count; i++)
+                {
+                    for (int j = i + 1; j < fences.Count; j++)
+                    {
+                        Point cross = Helper.CrossPoint(fences[i].p1, fences[i].p2, fences[j].p1, fences[j].p2);
+
+                        if (cross != null)
+                        {
+                            crossPoint.Add(cross);
+                        }
+
+                    }
+                }
+
+            }
+
+            Console.WriteLine(crossPoint.Count());
+
         }
 
         public void ProcessDataItem(Scanner scanner)
         {
+            N = scanner.NextInt();
+
+            for (int i = 0; i < N; i++)
+            {
+                Point p1 = new Point();
+                Point p2 = new Point();
+
+                p1.x = scanner.NextInt();
+                p1.y = scanner.NextInt();
+                p2.x = scanner.NextInt();
+                p2.y = scanner.NextInt();
+
+                fences.Add(new Line() { p1 = p1, p2 = p2 });
+            }
         }
     }
 }
