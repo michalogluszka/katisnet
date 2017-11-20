@@ -110,9 +110,9 @@ namespace Kattis.UltimateSolution
                         if (cross != null)
                         {
                             var current = new Crossing() { l1 = fences[i], l2 = fences[j], id = crossId };
-                            crossId++;
+                            crossId++;                            
 
-                            VisitOptimal(current);
+                            VisitOptimal(current,null);
                         }
                     }
                 }
@@ -122,101 +122,49 @@ namespace Kattis.UltimateSolution
             Console.WriteLine(cows);
         }
 
-        public void VisitOptimal(Crossing current)
+        
+        List<Pair> crossingsVisited = new List<Pair>();
+        List<Pair> currentRoute = new List<Pair>();
+
+        void VisitOptimal(Crossing current,Pair route)
         {
             graph.Add(current);
 
-            if (!currentRoute.Contains(current))
+            if (route != null)
             {
-                currentRoute.Add(current);
+                if (!currentRoute.Contains(route))
+                {
+                    currentRoute.Add(route);
+                }
+                else
+                {
+                    currentRoute = new List<Pair>();
+                    cows++;
+                }
             }
-            else
-            {
-                currentRoute = new List<Crossing>();
-                cows++;
-            }
-
             //all which are connected
-            var connected = graph.Where((p => p.l1 == current.l1 || p.l2 == current.l2 || p.l2 == current.l1 || p.l1 == current.l2)).ToList();
+            var connected = graph.Where(p => (p.l1 == current.l1 || p.l2 == current.l2 || p.l2 == current.l1 || p.l1 == current.l2) && p!=current).ToList();
 
-            foreach (var c in current.connected)
+            foreach (var c in connected)
             {
-                Pair route = crossingsVisited.FirstOrDefault(p => (p.crossing1 == current && p.crossing2 == c) || p.crossing2 == current && p.crossing1 == c);
+                Pair newRoute = crossingsVisited.FirstOrDefault(p => (p.crossing1 == current && p.crossing2 == c) || p.crossing2 == current && p.crossing1 == c);
 
-                if (route == null)
+                if (newRoute == null)
                 {
                     Pair pair = new Pair() { crossing1 = current, crossing2 = c };
                     crossingsVisited.Add(pair);
-                    VisitOptimal(c);
+                    VisitOptimal(c, pair);
                 }
             }
 
         }
 
-        List<Line> linesVisited = new List<Line>();
-        List<Pair> crossingsVisited = new List<Pair>();
 
-        List<Crossing> currentRoute = new List<Crossing>();
-
-        public int Visit(Crossing current)
-        {
-            if (!currentRoute.Contains(current))
-            {
-                currentRoute.Add(current);
-            }
-            else
-            {
-                currentRoute = new List<Crossing>();
-                cows++;
-            }
-
-            foreach (var c in current.connected)
-            {
-                Pair route = crossingsVisited.FirstOrDefault(p => (p.crossing1 == current && p.crossing2 == c) || p.crossing2 == current && p.crossing1 == c);
-
-                if (route == null)
-                {
-                    Pair pair = new Pair() { crossing1 = current, crossing2 = c };
-                    crossingsVisited.Add(pair);
-
-
-
-                    Visit(c);
-
-
-                }
-            }
-            return 0;
-        }
 
         class Pair
         {
             public Crossing crossing1;
             public Crossing crossing2;
-        }
-
-
-        public void AddConnections(Crossing current)
-        {
-            var connected = graph.Where(p => p.l1 == current.l1 || p.l2 == current.l2 || p.l2 == current.l1 || p.l1 == current.l2).ToList();
-            current.connected = connected;
-
-            foreach (var c in connected)
-            {
-                c.connected.Add(current);
-            }
-
-            graph.Add(current);
-
-            //var existing = graph.FirstOrDefault(p => p == current);
-            //if(existing==null)
-            //{
-            //    graph.Add(current);
-            //    foreach (var c in connected)
-            //    {
-            //        AddConnections(c);
-            //    }
-            //}
         }
 
         public void ProcessDataItem(Scanner scanner)
